@@ -1,8 +1,7 @@
 """
 """
-import csv
 import datetime
-from os.path import join, exists
+from os.path import join
 
 from library.csv import log_entry
 from settings import COMMANDS, DATA_FOLDER
