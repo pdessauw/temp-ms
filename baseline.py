@@ -3,10 +3,10 @@
 import argparse
 from os import listdir
 from os.path import join, splitext
-from typing import Dict
 
-from library.metrics.baseline import BaselineMetric
+from library.metrics.baseline import BaselineMetrics
 from settings import DATA_FOLDER
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -19,7 +19,7 @@ if __name__ == "__main__":
 
     # Create the baseline objects
     baselines = [
-        BaselineMetric(join(DATA_FOLDER, csv_filename))
+        BaselineMetrics(join(DATA_FOLDER, csv_filename))
         for csv_filename in listdir(DATA_FOLDER)
         if splitext(csv_filename)[1] == ".csv"
     ]
@@ -27,6 +27,7 @@ if __name__ == "__main__":
         baseline.prefix: baseline for baseline in baselines
     }
 
+    # Parse all possible arguments
     if args.init:
         for baseline in baselines:
             baseline.init_baseline()
@@ -43,7 +44,3 @@ if __name__ == "__main__":
                 continue
 
             baseline_dict[prefix].set_metric(metric, value)
-
-
-
-

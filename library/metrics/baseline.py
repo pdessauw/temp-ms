@@ -6,7 +6,7 @@ from os.path import splitext, basename
 import pandas as pd
 
 
-class BaselineMetric(object):
+class BaselineMetrics(object):
     def __init__(self, filepath):
         self.datafile_path = filepath
         self.prefix = basename(splitext(self.datafile_path)[0])
