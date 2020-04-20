@@ -28,7 +28,7 @@ class NvidiaSmiCommand(AbstractCommand):
             for item in split_line(raw_output[5])
         ]
         values = [
-            re.sub(r"[^0-9.]", "", item.lower())
+            float(re.sub(r"[^0-9.]", "", item.lower()))
             for item in split_line(raw_output[8])
         ]
 
