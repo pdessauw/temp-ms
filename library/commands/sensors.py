@@ -41,8 +41,14 @@ class SensorsCommand(AbstractCommand):
                     line_items_titles[line_items_index] += "_1"
                     line_title += "_2"
 
+                # Try converting the data to float, if it fails store -1
+                try:
+                    line_value = float(line_items[1])
+                except ValueError:
+                    line_value = -1.
+
                 line_items_titles.append(line_title)
-                line_items_values.append(line_items[1])
+                line_items_values.append(line_value)
 
             category.update(dict(zip(line_items_titles, line_items_values)))
             categories.append(category)
