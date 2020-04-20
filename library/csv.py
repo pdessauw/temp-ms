@@ -19,5 +19,6 @@ def log_entry(entry, filepath):
 
     # Add entry to the list
     with open(filepath, "a") as logfile:
-        logfile_writer = csv.DictWriter(logfile, fieldnames=headers.split(","))
+        logfile_writer = csv.DictWriter(logfile, fieldnames=headers.split(","),
+                                        dialect="unix", quoting=csv.QUOTE_NONE)
         logfile_writer.writerow(entry)
