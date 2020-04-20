@@ -12,15 +12,16 @@ class AbstractCommand(ABC):
         self.output = None
         self.command = command_list
 
-    def execute(self):
+    def execute(self, command_input=None):
         self.is_executed = True
         try:
             process = subprocess.Popen(
                 self.command,
+                stdin=subprocess.PIPE,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.STDOUT
             )
-            stdout, _ = process.communicate()
+            stdout, _ = process.communicate(input=command_input)
             self.return_code = process.returncode
             self.output = stdout.decode("utf-8")
         except Exception:

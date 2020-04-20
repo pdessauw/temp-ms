@@ -1,0 +1,2 @@
+[%s] Temperature Monitoring System
+Content-Type: text/html
