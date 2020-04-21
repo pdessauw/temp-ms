@@ -8,7 +8,8 @@ from os.path import join, splitext
 from library.commands.mail import MailCommand
 from library.metrics.alerts import AlertManager
 from library.string import to_bytes
-from settings import DATA_FOLDER, ALERT_TIMEFRAME_MINUTES, ALERTS, DEFAULT_LEVEL
+from settings import DATA_FOLDER, ALERT_TIMEFRAME_MINUTES, ALERTS, DEFAULT_LEVEL, \
+    ALERTS_NB_MAIL_TRIGGER
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -25,8 +26,14 @@ if __name__ == "__main__":
 
     html = alert_manager.to_html(all_data=args.all)
     print("Alert level: %s" % alert_manager.alert_level)
+    print("Alert number: %d" % alert_manager.alert_number)
 
-    if html is not None and (alert_manager.alert_level != DEFAULT_LEVEL or args.all):
+    if html is None or (not args.all and (
+        alert_manager.alert_level == DEFAULT_LEVEL
+        or alert_manager.alert_number < ALERTS_NB_MAIL_TRIGGER
+    )):
+        print("No mail to send.")
+    else:
         print("Sending mail...")
         with open(ALERTS["content"], "r") as alert_content_fp:
             alert_template = alert_content_fp.read()
@@ -45,5 +52,3 @@ if __name__ == "__main__":
             print("Error occured while sending mail!")
         else:
             print("Mail sent!")
-    else:
-        print("No mail to send.")

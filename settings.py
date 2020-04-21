@@ -16,6 +16,9 @@ COMMANDS = [
 # How far to look back in the
 ALERT_TIMEFRAME_MINUTES = 5
 
+# Number of alert to trigger sending an email
+ALERTS_NB_MAIL_TRIGGER = 5
+
 # Difference from baseline level where a mail should be sent
 WARNING_LEVELS = OrderedDict({
     "CRIT": [1.30, "red"],
