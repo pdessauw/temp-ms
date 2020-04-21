@@ -12,6 +12,7 @@ class AlertManager(DataFileStore):
     def __init__(self, data_files):
         self.data_files = data_files
         self.alert_level = DEFAULT_LEVEL
+        self.alert_number = 0
 
         super().__init__(join(DATA_FOLDER, "alert_man.bin"))
 
@@ -20,6 +21,8 @@ class AlertManager(DataFileStore):
 
         date_now = datetime.now()
         date_min = date_now - timedelta(minutes=timeframe)
+
+        warning_names = list(WARNING_LEVELS.keys())
 
         for data_filepath in self.data_files:
             csv_metrics = BaselineMetrics(data_filepath)
@@ -46,6 +49,7 @@ class AlertManager(DataFileStore):
                     if csv_current_dataframe.shape[0] == 0:  # No up-to-date value available
                         alert_level = FAIL_LEVEL
                         self.alert_level = alert_level
+                        self.alert_number += 1
                         break
 
                     limit_level = metric_baseline * warning_value[0]
@@ -56,8 +60,12 @@ class AlertManager(DataFileStore):
 
                     if current_alerts > 0:  # If we have values over the warning size
                         alert_level = warning_level
-                        if self.alert_level == DEFAULT_LEVEL:
+                        if self.alert_level == DEFAULT_LEVEL \
+                                or (self.alert_level != FAIL_LEVEL
+                                    and warning_names.index(self.alert_level) >
+                                    warning_names.index(alert_level)):
                             self.alert_level = alert_level
+                        self.alert_number += 1
                         break
 
                 updated_data.append([
@@ -75,7 +83,7 @@ class AlertManager(DataFileStore):
 
     def list(self):
         headers = [[
-            "name", "alert_level", "past_alerts", "current_alerts", "base_line", "past_max",
+            "name", "alert_level", "past_alerts", "current_alerts", "baseline", "past_max",
             "current_max", "last_recorded"
         ]]
         return headers + self._load_data()
