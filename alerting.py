@@ -8,7 +8,7 @@ from os.path import join, splitext
 from library.commands.mail import MailCommand
 from library.metrics.alerts import AlertManager
 from library.string import to_bytes
-from settings import DATA_FOLDER, ALERT_TIMEFRAME_MINUTES, ALERTS
+from settings import DATA_FOLDER, ALERT_TIMEFRAME_MINUTES, ALERTS, DEFAULT_LEVEL
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -25,7 +25,7 @@ if __name__ == "__main__":
 
     html = alert_manager.to_html(all_data=args.all)
 
-    if html is not None:
+    if html is not None or (alert_manager.alert_level == DEFAULT_LEVEL and not args.all):
         print("Sending mail...")
         with open(ALERTS["content"], "r") as alert_content_fp:
             alert_template = alert_content_fp.read()
