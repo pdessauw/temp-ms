@@ -24,8 +24,9 @@ if __name__ == "__main__":
     alert_manager.analyze(timeframe=args.time)
 
     html = alert_manager.to_html(all_data=args.all)
+    print("Alert level: %s" % alert_manager.alert_level)
 
-    if html is not None or (alert_manager.alert_level == DEFAULT_LEVEL and not args.all):
+    if html is not None and (alert_manager.alert_level != DEFAULT_LEVEL or args.all):
         print("Sending mail...")
         with open(ALERTS["content"], "r") as alert_content_fp:
             alert_template = alert_content_fp.read()
