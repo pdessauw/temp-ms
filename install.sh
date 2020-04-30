@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Install script for the project
 INSTALL_DIR="/usr/local/bin/monitor"
 REPO_DIR=$(realpath $(dirname ${BASH_SOURCE[0]}))
 
