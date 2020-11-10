@@ -1,4 +1,4 @@
-from library.commands.sensors import SensorsCommandfrom library.commands.sensors import SensorsCommand# Temperature Monitor System
+# Temperature Monitor System
 
 ## Disclaimer
 
